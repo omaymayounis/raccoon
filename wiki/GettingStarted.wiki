@@ -27,12 +27,16 @@ engine.startComponent();
 
 = Coding Tasks =
 
-The engine operates in an asynchronous manner, that is, after you invoke an operation you immediately receive a result handle which you can later use to retrieve the results. In the meantime, the engine schedules to execute the operation asynchronously. Once the operation is complete, you receive a callback that 
+The engine operates in an asynchronous manner, that is, after you invoke an operation you immediately receive a handle which you can later use to retrieve the results. In the meantime, the engine schedules to execute the operation asynchronously. Once the operation is complete, you receive a callback that indicates the corresponding status change. To receive updates on status change of your operations, e.g., completion, error, start to execute, you need to register a listener. The listener must implement `org.msrg.raccoon.engine.ICodingListener` and provide the logic to react to operation status change. For example, once the operation is completed successfully, it must retrieve the results. The listener is registered via the engine's `registerCodingListener(ICodingListener listeners)` method:
+{{{
+ICoding listener; // Your implementation
+engine.registerCodingListener(listener);
+}}}
 
 
 = Coding Operations =
 
-The engine implements operations such as encoding, decoding data and multiplication and inversion of matrices in Galouis-Field of G^8. These operations are defined in `org.msrg.raccoon.engine.ICodingEngine` and include data encoding and decoding, matrix multiplication, inversion and equality check. These operations are as follows:
+The operations that are supported by the engine are defined in `org.msrg.raccoon.engine.ICodingEngine` and include data encoding and decoding, matrix multiplication, inversion (in Galois Field of G^8) and equality check. These operations are as follows:
 {{{
   public CodedSlice_CodingResult encode(ICodingListener listener, CodedBatch codeBatch);
   public Equals_CodingResult decode(ICodingListener listener, ReceivedCodedBatch codeBatch);
@@ -45,10 +49,52 @@ The engine implements operations such as encoding, decoding data and multiplicat
   public Equals_CodingResult checkEquality(ICodingListener listener, BulkMatrix bm1, BulkMatrix bm2);
 }}}
 
-To receive updates on status change of your operations, e.g., completion, error, start to execute, you need to register a listener. The listener must implement `org.msrg.raccoon.engine.ICodingListener` and provide the logic to react to operation status change. For example, once the operation is completed successfully, it must retrieve the results. The listener is registered via the engine's `registerCodingListener(ICodingListener listeners)` method:
+= Your First Coding Operation =
+
+The following is a simple code that executes a simple multiplication operation:
+
 {{{
-ICoding listener; // Your implementation
-engine.registerCodingListener(listener);
+
+
+class MyCodingListener implements CodingListener {
+
+  public void codingFinished(CodingResult result) {
+    switch (result._resultsType) {
+      case BOOLEAN:
+      {
+        if(((Equals_CodingResult)result).getResult())
+          _equals ++;
+        else
+          _unequals ++;
+        break;
+      }
+
+      case BULK_MATRIX:
+      {
+        BulkMatrix_CodingResult smResult = (BulkMatrix_CodingResult) result;
+        BulkMatrix sm = smResult.getResult();
+        if(_testType == CodingEngineTestType.TEST_FULL_MULTYPLY_TASKS && !_multipliedBM.equals(sm))
+          throw new IllegalStateException("BulkMatrix is not equal to the product!");
+        break;
+      }
+
+      case CODED_SLICE_MATRIX:
+      {
+        CodedSlice_CodingResult smResult = (CodedSlice_CodingResult) result;
+        CodedPiece sm = smResult.getResult();
+        break;
+      }
+
+      default:
+        break;
+    }
+  }
+
+  public void codingFailed(CodingResult result) {
+    // Handle errors
+  }
+
+}
+
 }}}
 
-= Your First Coding Operation =
