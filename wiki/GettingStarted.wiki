@@ -79,9 +79,19 @@ class MyCodingListener implements ICodingListener {
 
   protected void invokeMultiplication() {
     byte[][] b1 = new byte[10][100];
+    for(int i=0 ; i<b1.length ; i++) {
+    b1[i] = new byte[100];
+    for(int j=0 ; j<b1[i].length ; j++)
+      b1[i][j] = (byte) (i+j);
+    }
     ByteMatrix m = new ByteMatrix(b1); // Initialize byte matrix data
 
-    byte[][] b2 = new byte[100][10000]; // Initialize bulk matrix data
+    byte[][] b2 = new byte[100][10000];
+    for(int i=0 ; i<b2.length ; i++) {
+      b2[i] = new byte[100];
+      for(int j=0 ; j<b2[i].length ; j++)
+        b2[i][j] = (byte) (i+j);
+    }
     BulkMatrix bm = new BulkMatrix(b2);
 
     BulkMatrix_CodingResult result = engine.multiply(this, m, bm);
