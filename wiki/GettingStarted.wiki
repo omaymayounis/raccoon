@@ -66,7 +66,7 @@ import org.msrg.raccoon.engine.task.result.BulkMatrix_CodingResult;
 import org.msrg.raccoon.engine.task.result.CodingResult;
 
 
-class MyCodingListener implements CodingListener {
+class MyCodingListener implements ICodingListener {
 
   protected ICodingEngine engine;
 
@@ -78,10 +78,13 @@ class MyCodingListener implements CodingListener {
   }
 
   protected void invokeMultiplication() {
-    ByteMatrix m; // Initialize your byte matrix;
-    BulkMatrix bm; // Initialize your bulk matrix;
+    byte[][] b1 = new byte[10][100];
+    ByteMatrix m = new ByteMatrix(b1); // Initialize byte matrix data
 
-    BulkMatrix_CodingResult result = multiply(this, m, bm);
+    byte[][] b2 = new byte[100][10000]; // Initialize bulk matrix data
+    BulkMatrix bm = new BulkMatrix(b2);
+
+    BulkMatrix_CodingResult result = engine.multiply(this, m, bm);
     // Retain the results handle
   }
 
