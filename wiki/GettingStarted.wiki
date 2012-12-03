@@ -1,0 +1,54 @@
+#summary Get started with Raccoon.
+#labels gettingstarted,featured
+
+= Introduction =
+
+This page gives a brief introduction to Raccoon to help you get started developing your own code.
+
+
+= Engine Intantiation =
+
+The main class that implements the coding engine is `org.msrg.raccoon.engine.CodingEngineImpl` which implements the `ICodingEngine` interface. To start, you need to instantiate a Raccoon engine by specifying the number of threads in its thread pool:
+{{{
+int threads = 4;
+ICodingEngine engine = new CodingEngineImpl(threads);
+}}}
+
+Next, you need to call `init()` in order to initialize and allocate the engine threads:
+{{{
+engine.init();
+}}}
+
+Finally, to get the threads pool initialization complete, you need to call:
+{{{
+engine.startComponent();
+}}}
+
+
+= Coding Tasks =
+
+The engine operates in an asynchronous manner, that is, after you invoke an operation you immediately receive a result handle which you can later use to retrieve the results. In the meantime, the engine schedules to execute the operation asynchronously. Once the operation is complete, you receive a callback that 
+
+
+= Coding Operations =
+
+The engine implements operations such as encoding, decoding data and multiplication and inversion of matrices in Galouis-Field of G^8. These operations are defined in `org.msrg.raccoon.engine.ICodingEngine` and include data encoding and decoding, matrix multiplication, inversion and equality check. These operations are as follows:
+{{{
+  public CodedSlice_CodingResult encode(ICodingListener listener, CodedBatch codeBatch);
+  public Equals_CodingResult decode(ICodingListener listener, ReceivedCodedBatch codeBatch);
+	
+  public BulkMatrix_CodingResult multiply(ICodingListener listener, ByteMatrix m, BulkMatrix bm);
+  public SliceMatrix_CodingResult multiply(ICodingListener listener, ByteMatrix1D m, BulkMatrix bm);
+	
+  public ByteMatrix_CodingResult inverse(ICodingListener listener, ByteMatrix m);
+  public Equals_CodingResult checkEquality(ICodingListener listener, SliceMatrix sm1, SliceMatrix sm2);
+  public Equals_CodingResult checkEquality(ICodingListener listener, BulkMatrix bm1, BulkMatrix bm2);
+}}}
+
+To receive updates on status change of your operations, e.g., completion, error, start to execute, you need to register a listener. The listener must implement `org.msrg.raccoon.engine.ICodingListener` and provide the logic to react to operation status change. For example, once the operation is completed successfully, it must retrieve the results. The listener is registered via the engine's `registerCodingListener(ICodingListener listeners)` method:
+{{{
+ICoding listener; // Your implementation
+engine.registerCodingListener(listener);
+}}}
+
+= Your First Coding Operation =
