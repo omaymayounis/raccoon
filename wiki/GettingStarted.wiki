@@ -68,6 +68,8 @@ import org.msrg.raccoon.engine.task.result.CodingResult;
 
 class MyCodingListener implements CodingListener {
 
+  protected ICodingEngine engine;
+
   public MyCodingListener() {
     engine = new CodingEngineImpl(4);
     engine.init();
