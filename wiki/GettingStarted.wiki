@@ -60,31 +60,16 @@ class MyCodingListener implements CodingListener {
 
   public void codingFinished(CodingResult result) {
     switch (result._resultsType) {
-      case BOOLEAN:
-      {
-        if(((Equals_CodingResult)result).getResult())
-          _equals ++;
-        else
-          _unequals ++;
-        break;
-      }
-
       case BULK_MATRIX:
       {
         BulkMatrix_CodingResult smResult = (BulkMatrix_CodingResult) result;
         BulkMatrix sm = smResult.getResult();
-        if(_testType == CodingEngineTestType.TEST_FULL_MULTYPLY_TASKS && !_multipliedBM.equals(sm))
-          throw new IllegalStateException("BulkMatrix is not equal to the product!");
+        // Do something with the result of the multiplication.
         break;
       }
 
+      case BOOLEAN:
       case CODED_SLICE_MATRIX:
-      {
-        CodedSlice_CodingResult smResult = (CodedSlice_CodingResult) result;
-        CodedPiece sm = smResult.getResult();
-        break;
-      }
-
       default:
         break;
     }
@@ -97,4 +82,3 @@ class MyCodingListener implements CodingListener {
 }
 
 }}}
-
