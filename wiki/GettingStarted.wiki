@@ -55,9 +55,9 @@ The following is a simple code that executes a simple multiplication operation:
 
 {{{
 
-import org.msrg.engine.ICodingEngine;
-import org.msrg.engine.ICodingListener;
-import org.msrg.engine.CodingEngineImpl;
+import org.msrg.raccoon.engine.ICodingEngine;
+import org.msrg.raccoon.engine.ICodingListener;
+import org.msrg.raccoon.engine.CodingEngineImpl;
 
 import org.msrg.raccoon.matrix.bulk.BulkMatrix;
 import org.msrg.raccoon.matrix.finitefields.ByteMatrix;
