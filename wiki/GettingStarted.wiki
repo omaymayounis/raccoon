@@ -1,12 +1,12 @@
 #summary Get started with Raccoon.
 #labels gettingstarted,featured
 
-= Introduction =
+== Introduction ==
 
 This page gives a brief introduction to Raccoon to help you get started developing your own code.
 
 
-= Engine Intantiation =
+== Engine Instantiation ==
 
 The main class that implements the coding engine is `org.msrg.raccoon.engine.CodingEngineImpl` which implements the `ICodingEngine` interface. To start, you need to instantiate a Raccoon engine by specifying the number of threads in its thread pool:
 {{{
@@ -25,7 +25,7 @@ engine.startComponent();
 }}}
 
 
-= Coding Tasks =
+== Coding Tasks ==
 
 The engine operates in an asynchronous manner, that is, after you invoke an operation you immediately receive a handle which you can later use to retrieve the results. In the meantime, the engine schedules to execute the operation asynchronously. Once the operation is complete, you receive a callback that indicates the corresponding status change. To receive updates on status change of your operations, e.g., completion, error, start to execute, you need to register a listener. The listener must implement `org.msrg.raccoon.engine.ICodingListener` and provide the logic to react to operation status change. For example, once the operation is completed successfully, it must retrieve the results. The listener is registered via the engine's `registerCodingListener(ICodingListener listeners)` method:
 {{{
@@ -34,7 +34,7 @@ engine.registerCodingListener(listener);
 }}}
 
 
-= Coding Operations =
+== Coding Operations ==
 
 The operations that are supported by the engine are defined in `org.msrg.raccoon.engine.ICodingEngine` and include data encoding and decoding, matrix multiplication, inversion (in Galois Field of G^8) and equality check. These operations are as follows:
 {{{
@@ -49,7 +49,7 @@ The operations that are supported by the engine are defined in `org.msrg.raccoon
   public Equals_CodingResult checkEquality(ICodingListener listener, BulkMatrix bm1, BulkMatrix bm2);
 }}}
 
-= Your First Coding Operation =
+== Your First Piece of Code ==
 
 The following is a simple code that executes a simple multiplication operation:
 
