@@ -55,8 +55,33 @@ The following is a simple code that executes a simple multiplication operation:
 
 {{{
 
+import org.msrg.engine.ICodingEngine;
+import org.msrg.engine.ICodingListener;
+import org.msrg.engine.CodingEngineImpl;
+
+import org.msrg.raccoon.matrix.bulk.BulkMatrix;
+import org.msrg.raccoon.matrix.finitefields.ByteMatrix;
+
+import org.msrg.raccoon.engine.task.result.BulkMatrix_CodingResult;
+import org.msrg.raccoon.engine.task.result.CodingResult;
+
 
 class MyCodingListener implements CodingListener {
+
+  public MyCodingListener() {
+    engine = new CodingEngineImpl(4);
+    engine.init();
+    engine.registerCodingListener(this);
+    engine.startComponent();
+  }
+
+  protected void invokeMultiplication() {
+    ByteMatrix m; // Initialize your byte matrix;
+    BulkMatrix bm; // Initialize your bulk matrix;
+
+    BulkMatrix_CodingResult result = multiply(this, m, bm);
+    // Retain the results handle
+  }
 
   public void codingFinished(CodingResult result) {
     switch (result._resultsType) {
@@ -76,9 +101,10 @@ class MyCodingListener implements CodingListener {
   }
 
   public void codingFailed(CodingResult result) {
-    // Handle errors
+    // Handle errors...
   }
 
+  public void codingStarted(CodingResult result) {}
+  public void codingPreliminaryStageCompleted(CodingResult result){}
 }
-
 }}}
